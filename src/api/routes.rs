@@ -1,11 +1,21 @@
-use actix_web::{web,HttpResponse, Responder};
+use actix_web::{HttpResponse, Responder, web};
 
-async fn index() -> impl  Responder {
+use crate::infra::repository::UserRepository;
+use crate::use_cases::use_cases::UserUseCase;
+use crate::utils::logger::Logger;
+
+async fn index() -> impl Responder {
     HttpResponse::Ok().body("Hello world!")
 }
 
-async fn users() -> impl  Responder {
-    HttpResponse::Ok().body("Listing users...")
+async fn users() -> impl Responder {
+    let use_cases = UserUseCase::new(UserRepository::new(Logger));
+
+    use_cases.get_users();
+
+    HttpResponse::Ok().body(
+        "Body..."
+    )
 }
 
 pub fn config(cfg: &mut web::ServiceConfig) {
