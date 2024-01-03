@@ -1,6 +1,6 @@
 use actix_web::{HttpResponse, Responder, web};
 
-use crate::infra::repository::UserRepository;
+use crate::infra::repository::UserRepositoryImpl;
 use crate::use_cases::use_cases::UserUseCase;
 use crate::utils::logger::Logger;
 
@@ -9,7 +9,7 @@ async fn index() -> impl Responder {
 }
 
 async fn users() -> impl Responder {
-    let use_cases = UserUseCase::new(UserRepository::new(Logger));
+    let use_cases = UserUseCase::new(UserRepositoryImpl::new(Logger));
 
     use_cases.get_users();
 
